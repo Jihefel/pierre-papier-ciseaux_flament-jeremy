@@ -11,7 +11,7 @@ function ScoreTable(props) {
 
   return (
     <>
-      <Button variant="dark" onClick={handleShow} className={"openTable"}>
+      <Button variant="success" onClick={handleShow} className={"openTable"}>
         {show ? "Fermer le tableau des scores" : "Afficher le tableau des scores" }
       </Button>
 
@@ -22,13 +22,13 @@ function ScoreTable(props) {
         <Offcanvas.Body className="d-flex justify-content-center">
           <table>
             <thead>
-                <tr className="d-flex justify-content-center gap-4">
+                <tr className="d-flex justify-content-center gap-5">
                     <th>Joueur</th>
                     <th>IA</th>
                 </tr>
             </thead>
             <tbody>
-                <tr className="d-flex justify-content-between gap-4">
+                <tr className="d-flex justify-content-between">
                     <td>{props.scorePlayer}</td>
                     <td>{props.scoreIA}</td>
                 </tr>
