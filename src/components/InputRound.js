@@ -3,9 +3,9 @@ import { Button, InputGroup, Form } from "react-bootstrap";
 function InputRound(props) {
     return (
       <div className="question text-center">
-        <label htmlFor="rounds" className="fs-1 text-white">
+        <Form.Label htmlFor="rounds" className="fs-1 text-white">
           Combien de rounds voulez-vous jouer ? (max 100)
-        </label>
+        </Form.Label>
         <InputGroup className="champs w-25 mx-auto mt-4">
           <Form.Control
             type="number"

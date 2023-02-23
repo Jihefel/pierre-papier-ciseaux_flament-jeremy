@@ -1,4 +1,3 @@
-import { FaHandRock, FaHandPaper, FaHandScissors } from "react-icons/fa";
 import {
   Container,
   Button,
@@ -7,90 +6,42 @@ import {
   Col,
   Spinner,
 } from "react-bootstrap";
-import React, { useState, useEffect } from "react";
+import NewGameBtn from "./newGameBtn";
+import WinnerAnnounce from './WinnerAnnounce';
+import { FaHandRock } from "react-icons/fa";
 
-function Jeu(props) {
-  //ANCHOR - Hooks
+function JvsIA(props) {
 
-  const [choice1, setChoice1] = useState(
-    <FaHandRock className="align-self-center opacity-0" />
-  );
-  const [choice2, setChoice2] = useState(
-    <FaHandRock className="align-self-center opacity-0" />
-  );
-  const [winner, setWinner] = useState("-");
-
-  const rock = <FaHandRock className="align-self-center" />;
-  const paper = <FaHandPaper className="align-self-center" />;
-  const scissors = <FaHandScissors className="align-self-center" />;
-
-  const choices = [rock, paper, scissors];
-
-  const [gameOver, setGameOver] = useState(false);
-  const [nextGame, setNextGame] = useState(false);
-
-  const colorsSpinner = [
-    "primary",
-    "secondary",
-    "success",
-    "warning",
-    "danger",
-    "info",
-    "dark",
-  ];
-
-  const [isDisabled, setIsDisabled] = useState(false);
-
-  useEffect(() => {
-    if (nextGame) {
-      props.setScorePlayer(0);
-      props.setScoreIA(0);
-      props.setRoundSetted(false);
-      props.setNbRound(1);
-      props.setRoundId(1);
-      setIsDisabled(false);
-      setWinner("-");
-      setChoice1(<FaHandRock className="align-self-center opacity-0" />);
-      setChoice2(<FaHandRock className="align-self-center opacity-0" />);
-    }
-  }, [nextGame]);
-
-  
   //SECTION - Comportement
-  const newGame = () => {
-    setGameOver(false);
-    setNextGame(true)
-  };
-
   const round = (btnId) => {
-    setWinner("-");
-    setIsDisabled(true);
-    const randomColor = Math.floor(Math.random() * colorsSpinner.length);
+    props.setWinner("-");
+    props.setIsDisabled(true);
+    const randomColor = Math.floor(Math.random() * props.colorsSpinner.length);
 
     //ANCHOR - setChoice1
     switch (btnId) {
       case 1:
-        setChoice1(rock);
+        props.setChoice1(props.rock);
         break;
       case 2:
-        setChoice1(paper);
+        props.setChoice1(props.paper);
         break;
       case 3:
-        setChoice1(scissors);
+        props.setChoice1(props.scissors);
         break;
 
       default:
         break;
     }
     //ANCHOR - setChoice2
-    const random = Math.floor(Math.random() * choices.length);
-    const choicesCopy = [...choices];
-    setChoice2(
-      <Spinner animation="border" variant={colorsSpinner[randomColor]} />
+    const random = Math.floor(Math.random() * props.choices.length);
+    const choicesCopy = [...props.choices];
+    props.setChoice2(
+      <Spinner animation="border" variant={props.colorsSpinner[randomColor]} />
     );
 
     setTimeout(() => {
-      setChoice2(choicesCopy[random]);
+      props.setChoice2(choicesCopy[random]);
 
       //ANCHOR - Winner
       // Choice IA
@@ -101,17 +52,17 @@ function Jeu(props) {
           switch (btnId) {
             // Rock
             case 1:
-              setWinner("Egalité");
+              props.setWinner("Egalité");
               props.setWhoWon(null);
               break;
             // Paper
             case 2:
-              setWinner("Vous avez gagné");
+              props.setWinner("Vous avez gagné");
               props.setWhoWon(0);
               break;
             // Scissors
             case 3:
-              setWinner("L'IA a gagné");
+              props.setWinner("L'IA a gagné");
               props.setWhoWon(1);
               break;
 
@@ -125,17 +76,17 @@ function Jeu(props) {
           switch (btnId) {
             // Rock
             case 1:
-              setWinner("L'IA a gagné");
+              props.setWinner("L'IA a gagné");
               props.setWhoWon(1);
               break;
             // Paper
             case 2:
-              setWinner("Egalité");
+              props.setWinner("Egalité");
               props.setWhoWon(null);
               break;
             // Scissors
             case 3:
-              setWinner("Vous avez gagné");
+              props.setWinner("Vous avez gagné");
               props.setWhoWon(0);
               break;
 
@@ -149,17 +100,17 @@ function Jeu(props) {
           switch (btnId) {
             // Rock
             case 1:
-              setWinner("Vous avez gagné");
+              props.setWinner("Vous avez gagné");
               props.setWhoWon(0);
               break;
             // Paper
             case 2:
-              setWinner("L'IA a gagné");
+              props.setWinner("L'IA a gagné");
               props.setWhoWon(1);
               break;
             // Scissors
             case 3:
-              setWinner("Egalité");
+              props.setWinner("Egalité");
               props.setWhoWon(null);
               break;
 
@@ -175,11 +126,19 @@ function Jeu(props) {
       //ANCHOR - Fin de round
 
       props.setRoundId(props.roundId + 1);
-      if (props.roundId < props.nbRound && gameOver === false) {
-        setIsDisabled(false);
+      if (props.roundId < props.nbRound && props.gameOver === false) {
+        setTimeout(() => {
+          props.setIsDisabled(false);
+          props.setChoice1(
+            <FaHandRock className="align-self-center opacity-0" />
+          );
+          props.setChoice2(
+            <FaHandRock className="align-self-center opacity-0" />
+          );
+        }, 1500);
       } else if (props.roundId === props.nbRound) {
         setTimeout(() => {
-          setGameOver(true);
+          props.setGameOver(true);
         }, 2000);
       }
     }, 1000);
@@ -189,23 +148,17 @@ function Jeu(props) {
   //ANCHOR - Render
   return (
     <>
-      {gameOver === false ? (
-        <Container className="Jeu">
-          <div className="result text-center mb-5">
-            <h1
-              className={
-                (winner === "-" ? "opacity-0 " : "") +
-                " display-1 fw-bolder pb-5 text-warning"
-              }
-            >
-              {winner}
-            </h1>
-          </div>
+      {props.gameOver === false ? (
+        <Container className="JvsIA">
+          <WinnerAnnounce
+            winner={props.winner}
+            roundId={props.roundId}
+          ></WinnerAnnounce>
           <Row>
             <Col className="text-center">
               <Row>
                 <Col className="choice1 mb-5 d-flex justify-content-center">
-                  {choice1}
+                  {props.choice1}
                 </Col>
               </Row>
               <Row>
@@ -215,25 +168,25 @@ function Jeu(props) {
                       variant="success"
                       className="d-flex"
                       onClick={() => round(1)}
-                      disabled={isDisabled}
+                      disabled={props.isDisabled}
                     >
-                      {rock}
+                      {props.rock}
                     </Button>
                     <Button
                       variant="success"
                       className="d-flex"
                       onClick={() => round(2)}
-                      disabled={isDisabled}
+                      disabled={props.isDisabled}
                     >
-                      {paper}
+                      {props.paper}
                     </Button>
                     <Button
                       variant="success"
                       className="d-flex"
                       onClick={() => round(3)}
-                      disabled={isDisabled}
+                      disabled={props.isDisabled}
                     >
-                      {scissors}
+                      {props.scissors}
                     </Button>
                   </ButtonGroup>
                 </Col>
@@ -242,7 +195,7 @@ function Jeu(props) {
             <Col className="text-center">
               <Row>
                 <Col className="choice2 mb-5 d-flex justify-content-center">
-                  {choice2}
+                  {props.choice2}
                 </Col>
               </Row>
               <Row>
@@ -257,9 +210,9 @@ function Jeu(props) {
         <Container>
           <div className="result text-center mb-5">
             <h1 className={"display-1 fw-bolder pb-5 text-danger"}>
-              {props.scorePlayer > props.scoreIA
+              {props.scorePlayer1 > props.scorePlayer2
                 ? "Vous avez gagné la partie !"
-                : props.scorePlayer < props.scoreIA
+                : props.scorePlayer1 < props.scorePlayer2
                 ? "L'IA a gagné la partie !"
                 : "Egalité entre vous et l'IA !"}
             </h1>
@@ -268,9 +221,7 @@ function Jeu(props) {
             <Col className="text-center">
               <Row>
                 <Col className="mb-5 d-flex justify-content-center">
-                  <Button size="lg" variant="danger" onClick={newGame}>
-                    Nouvelle partie
-                  </Button>
+                  <NewGameBtn newGame={props.newGame}></NewGameBtn>
                 </Col>
               </Row>
             </Col>
@@ -281,4 +232,4 @@ function Jeu(props) {
   );
 }
 
-export default Jeu;
+export default JvsIA;
