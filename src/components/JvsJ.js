@@ -15,7 +15,6 @@ function JvsIA(props) {
   //ANCHOR - Hooks
 
   const [btnId1, setBtnId1] = useState(null);
-  const [btnId2, setBtnId2] = useState(null);
 
   //SECTION - Comportement
 
@@ -61,7 +60,6 @@ function JvsIA(props) {
   };
   //ANCHOR - setChoice2
   const preRound2 = (id2) => {
-    setBtnId2(id2);
 
     switch (id2) {
       case 1:

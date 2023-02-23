@@ -9,8 +9,8 @@ import { FaHandRock, FaHandPaper, FaHandScissors } from "react-icons/fa";
 
 function App() {
   const [whoWon, setWhoWon] = useState(null);
-  const [scorePlayer1, setScorePlayer1] = useState('');
-  const [scorePlayer2, setScorePlayer2] = useState('');
+  const [scorePlayer1, setScorePlayer1] = useState(0);
+  const [scorePlayer2, setScorePlayer2] = useState(0);
 
   const [roundSetted, setRoundSetted] = useState(false);
   const [nbRound, setNbRound] = useState(1);
@@ -19,7 +19,7 @@ function App() {
   const [gameId, setGameId] = useState(1);
 
   const [modeSetted, setModeSetted] = useState(false);
-  const [gameMode, setGameMode] = useState(null);
+  const [gameMode, setGameMode] = useState("-");
 
   const [choice1, setChoice1] = useState(
     <FaHandRock className="align-self-center opacity-0" />
@@ -52,7 +52,7 @@ function App() {
   const [isDisabled, setIsDisabled] = useState(false);
   const [isDisabled2, setIsDisabled2] = useState(true);
   
-  let scores = [null]
+  const [scoresTable, setScoresTable] = useState([]);
   
 
   useEffect(() => {
@@ -77,7 +77,6 @@ function App() {
     if (nextGame) {
       setScorePlayer1("");
       setScorePlayer2("");
-      setGameId(gameId+1);
       setRoundSetted(false);
       setNbRound(1);
       setRoundId(1);
@@ -102,10 +101,18 @@ function App() {
     }
   };
 
+
   const newGame = () => {
     setGameOver(false);
-    setNextGame(true)
+    setGameId(gameId+1);
+  
+    const newScoreEntry = [scorePlayer1, scorePlayer2, gameMode];
+    const newScoresTable = [...scoresTable, newScoreEntry];
+    setScoresTable(newScoresTable);
+    console.log(newScoresTable)
+    setNextGame(true);
   };
+  
 
   return (
     <>
@@ -119,7 +126,7 @@ function App() {
             gameMode={gameMode}
             modeSetted={modeSetted}
             gameId={gameId}
-            scores={scores}
+            scoresTable={scoresTable}
             nextGame={nextGame}
             />
         {roundSetted ? (
