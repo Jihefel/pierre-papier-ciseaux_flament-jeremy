@@ -8,7 +8,7 @@ import {
 } from "react-bootstrap";
 import NewGameBtn from "./newGameBtn";
 import { useState } from "react";
-import WinnerAnnounce from './WinnerAnnounce';
+import WinnerAnnounce from "./WinnerAnnounce";
 import { FaHandRock } from "react-icons/fa";
 
 function JvsIA(props) {
@@ -60,7 +60,6 @@ function JvsIA(props) {
   };
   //ANCHOR - setChoice2
   const preRound2 = (id2) => {
-
     switch (id2) {
       case 1:
         props.setChoice2(props.rock);

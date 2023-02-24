@@ -7,11 +7,10 @@ import {
   Spinner,
 } from "react-bootstrap";
 import NewGameBtn from "./newGameBtn";
-import WinnerAnnounce from './WinnerAnnounce';
+import WinnerAnnounce from "./WinnerAnnounce";
 import { FaHandRock } from "react-icons/fa";
 
 function JvsIA(props) {
-
   //SECTION - Comportement
   const round = (btnId) => {
     props.setWinner("-");

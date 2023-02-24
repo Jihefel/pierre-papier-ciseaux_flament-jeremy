@@ -8,6 +8,7 @@ import shifumiDbz from "./assets/videos/shifumi-dbz.mp4";
 import { FaHandRock, FaHandPaper, FaHandScissors } from "react-icons/fa";
 
 function App() {
+  //ANCHOR - Initialisation des états
   const [whoWon, setWhoWon] = useState(null);
   const [scorePlayer1, setScorePlayer1] = useState(0);
   const [scorePlayer2, setScorePlayer2] = useState(0);
@@ -19,7 +20,7 @@ function App() {
   const [gameId, setGameId] = useState(1);
 
   const [modeSetted, setModeSetted] = useState(false);
-  const [gameMode, setGameMode] = useState("-");
+  const [gameMode, setGameMode] = useState(null);
 
   const [choice1, setChoice1] = useState(
     <FaHandRock className="align-self-center opacity-0" />
@@ -30,6 +31,7 @@ function App() {
 
   const [winner, setWinner] = useState("-");
 
+  //ANCHOR - Définition des éléments de jeu
   const rock = <FaHandRock className="align-self-center" />;
   const paper = <FaHandPaper className="align-self-center" />;
   const scissors = <FaHandScissors className="align-self-center" />;
@@ -46,21 +48,22 @@ function App() {
     "dark",
   ];
 
+  //ANCHOR - Initialisation des états pour le jeu suivant
   const [gameOver, setGameOver] = useState(false);
   const [nextGame, setNextGame] = useState(false);
 
   const [isDisabled, setIsDisabled] = useState(false);
   const [isDisabled2, setIsDisabled2] = useState(true);
-  
-  const [scoresTable, setScoresTable] = useState([]);
-  
 
+  const [scoresTable, setScoresTable] = useState([]);
+
+  //ANCHOR - useEffect pour mettre à jour les scores des joueurs
   useEffect(() => {
     switch (whoWon) {
       case 0:
         setScorePlayer1(scorePlayer1 + 1);
         setWhoWon(null);
-        
+
         break;
       case 1:
         setScorePlayer2(scorePlayer2 + 1);
@@ -72,7 +75,7 @@ function App() {
     }
   }, [whoWon]);
 
-
+  //ANCHOR - useEffect pour réinitialiser les états pour le jeu suivant
   useEffect(() => {
     if (nextGame) {
       setScorePlayer1("");
@@ -87,86 +90,86 @@ function App() {
       setWinner("-");
       setChoice1(<FaHandRock className="align-self-center opacity-0" />);
       setChoice2(<FaHandRock className="align-self-center opacity-0" />);
-      setNextGame(false)
+      setNextGame(false);
     }
   }, [nextGame]);
 
+  //ANCHOR - Fonction pour valider le nombre de tours
   const validateRounds = () => {
     if (nbRound >= 1 && nbRound <= 100) {
       setRoundSetted(true);
       setScorePlayer1(0);
       setScorePlayer2(0);
     } else {
-      alert("Entrez un nombre entre 1 et 100");   
+      alert("Entrez un nombre entre 1 et 100");
     }
   };
 
-
+  //ANCHOR - Fonction pour lancer une nouvelle partie
   const newGame = () => {
     setGameOver(false);
-    setGameId(gameId+1);
-  
+    setGameId(gameId + 1);
+
     const newScoreEntry = [scorePlayer1, scorePlayer2, gameMode];
     const newScoresTable = [...scoresTable, newScoreEntry];
     setScoresTable(newScoresTable);
-    console.log(newScoresTable)
+    console.log(newScoresTable);
     setNextGame(true);
   };
-  
 
   return (
     <>
       <video autoPlay muted loop src={shifumiDbz}></video>
       <div className="App d-flex align-items-center justify-content-center">
-          <ScoreTable
-            scorePlayer1={scorePlayer1}
-            setScorePlayer1={setScorePlayer1}
-            scorePlayer2={scorePlayer2}
-            setScorePlayer2={setScorePlayer2}
-            gameMode={gameMode}
-            modeSetted={modeSetted}
-            gameId={gameId}
-            scoresTable={scoresTable}
-            nextGame={nextGame}
-            />
+        <ScoreTable
+          scorePlayer1={scorePlayer1}
+          setScorePlayer1={setScorePlayer1}
+          scorePlayer2={scorePlayer2}
+          setScorePlayer2={setScorePlayer2}
+          gameMode={gameMode}
+          modeSetted={modeSetted}
+          gameId={gameId}
+          scoresTable={scoresTable}
+          nextGame={nextGame}
+        />
         {roundSetted ? (
-            gameMode === 1 ? (
-              <JvsIA
-                whoWon={whoWon}
-                setWhoWon={setWhoWon}
-                nbRound={nbRound}
-                setNbRound={setNbRound}
-                roundId={roundId}
-                setRoundSetted={setRoundSetted}
-                setRoundId={setRoundId}
-                scorePlayer1={scorePlayer1}
-                setScorePlayer1={setScorePlayer1}
-                scorePlayer2={scorePlayer2}
-                setScorePlayer2={setScorePlayer2}
-                setModeSetted={setModeSetted}
-                isDisabled={isDisabled}
-                setIsDisabled={setIsDisabled}
-                choice1={choice1}
-                setChoice1={setChoice1}
-                choice2={choice2}
-                setChoice2={setChoice2}
-                choices={choices}
-                gameOver={gameOver}
-                setGameOver={setGameOver}
-                gameMode={gameMode}
-                setGameMode={setGameMode}
-                nextGame={nextGame}
-                setNextGame={setNextGame}
-                winner={winner}
-                setWinner={setWinner}
-                rock={rock}
-                paper={paper}
-                scissors={scissors}
-                newGame={newGame}
-                colorsSpinner={colorsSpinner}
-              />
-            ) : gameMode === 2 ? (
-              <JvsJ
+          gameMode === 1 ? (
+            <JvsIA
+              whoWon={whoWon}
+              setWhoWon={setWhoWon}
+              nbRound={nbRound}
+              setNbRound={setNbRound}
+              roundId={roundId}
+              setRoundSetted={setRoundSetted}
+              setRoundId={setRoundId}
+              scorePlayer1={scorePlayer1}
+              setScorePlayer1={setScorePlayer1}
+              scorePlayer2={scorePlayer2}
+              setScorePlayer2={setScorePlayer2}
+              setModeSetted={setModeSetted}
+              isDisabled={isDisabled}
+              setIsDisabled={setIsDisabled}
+              choice1={choice1}
+              setChoice1={setChoice1}
+              choice2={choice2}
+              setChoice2={setChoice2}
+              choices={choices}
+              gameOver={gameOver}
+              setGameOver={setGameOver}
+              gameMode={gameMode}
+              setGameMode={setGameMode}
+              nextGame={nextGame}
+              setNextGame={setNextGame}
+              winner={winner}
+              setWinner={setWinner}
+              rock={rock}
+              paper={paper}
+              scissors={scissors}
+              newGame={newGame}
+              colorsSpinner={colorsSpinner}
+            />
+          ) : gameMode === 2 ? (
+            <JvsJ
               whoWon={whoWon}
               setWhoWon={setWhoWon}
               nbRound={nbRound}
@@ -201,9 +204,8 @@ function App() {
               scissors={scissors}
               newGame={newGame}
               colorsSpinner={colorsSpinner}
-              />
-            ) : null
-          
+            />
+          ) : null
         ) : modeSetted === false ? (
           <ModeChoice setModeSetted={setModeSetted} setGameMode={setGameMode} />
         ) : (
